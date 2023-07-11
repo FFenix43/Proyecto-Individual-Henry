@@ -8,12 +8,17 @@ import ast
 from pydantic import BaseModel
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
+import requests
+from io import StringIO
 
-
-ruta_archivo = "C:/Users/Usuario/Documents/Henry/PI/Dataset/movies_dataset_modificado.csv"
-dataset = pd.read_csv(ruta_archivo)
-ruta_archivo1 = "C:/Users/Usuario/Documents/Henry/PI/Dataset/credits.csv"
-dataset2 = pd.read_csv(ruta_archivo1)
+url = 'https://raw.githubusercontent.com/FFenix43/Proyecto-Individual-Henry/main/movies_dataset_modificado.csv'
+response = requests.get(url)
+data = StringIO(response.text)
+dataset = pd.read_csv(data)
+url = 'https://www.dropbox.com/s/f1oxmgytzlyknkr/credits.csv?dl=1'  # Cambiar dl=0 a dl=1
+response = requests.get(url)
+data2 = StringIO(response.text)
+dataset2 = pd.read_csv(data2)
 
 dataset = dataset.dropna(subset=["overview"])
 dataset["overview"].fillna("", inplace=True)
